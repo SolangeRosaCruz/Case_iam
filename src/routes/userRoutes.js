@@ -2,13 +2,11 @@ const express = require('express');
 const router = express.Router();
 const userController = require('../controllers/userController');
 
-// Definir a rota para criar um novo usuário
-router.post('/users', userController.createUser);
-
-// Definir a rota para atualizar o cargo de um usuário
-router.put('/users', userController.updateUserCargo);
-
-// Definir a rota para listar todos os usuários
-router.get('/users', userController.listUsers);
+router.post('/criaruser', userController.createUser);
+router.put('/alterarcargo', userController.updateUserCargo);
+router.get('/listUsers', userController.listUsers);
+router.get('/listGroups', userController.listGroups);  
+router.post('/addUserToGroup', userController.addUserToGroup);  
 
 module.exports = router;
+
