@@ -20,6 +20,7 @@
     "supertest": "^7.0.0"
   },
   "dependencies": {
+    "bcrypt": "^5.1.1",
     "csv-writer": "^1.6.0"
   }
 }

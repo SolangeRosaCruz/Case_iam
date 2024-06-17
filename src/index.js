@@ -1,39 +1,45 @@
 const express = require('express');
-const csvParser = require('csv-parser');
-const fs = require('fs');
+const bodyParser = require('body-parser');
+const authController = require('./controllers/authController'); 
+const userController = require('./controllers/userController'); 
+const basicAuthMiddleware = require('./middlewares/basicAuthMiddleware'); 
 
 const app = express();
-const PORT = process.env.PORT || 3000;
 
-// Middleware para parsear JSON
-app.use(express.json());
+app.use(bodyParser.json());
 
-// Middleware para carregar os dados do CSV
+// Middleware para logar os headers e body das requisições
 app.use((req, res, next) => {
-    fs.createReadStream('./data/users.csv')
-        .pipe(csvParser())
-        .on('data', (row) => {
-            // Processar os dados do CSV
-        })
-        .on('end', () => {
-            next();
-        });
+  console.log('Headers:', req.headers);
+  console.log('Body:', req.body);
+  next();
 });
 
-// Importar as rotas de usuário
-const userRoutes = require('./routes/userRoutes');
+// Endpoint para registrar usuários
+app.post('/register', authController.registerUser);
+app.post('/login', authController.loginUser);
 
-// Usar as rotas de usuário
-app.use(userRoutes);
+// Endpoints - protegido com Basic Auth
+app.post('/criaruser', basicAuthMiddleware, userController.createUser);
+app.put('/alterarcargo', basicAuthMiddleware, userController.updateUserCargo);
+app.get('/listUsers',basicAuthMiddleware, userController.listUsers);
+app.get('/listGroups', basicAuthMiddleware, userController.listGroups);  
+app.post('/addUserToGroup', basicAuthMiddleware, userController.addUserToGroup);  
 
-// Importar as rotas de grupos
-const groupRoutes = require('./routes/groupRoutes');
 
-// Usar as rotas de grupos
-
-app.use(groupRoutes);
-
-// Iniciar o servidor
-app.listen(PORT, () => {
-    console.log(`Servidor está rodando na porta ${PORT}`);
+// Middleware para tratamento de erros de JSON inválido
+app.use((err, req, res, next) => {
+  if (err instanceof SyntaxError && err.status === 400 && 'body' in err) {
+    console.error('Bad JSON:', err.message);
+    return res.status(400).send({ error: 'Invalid JSON' });
+  }
+  next();
 });
+
+const port = process.env.PORT || 3000;
+app.listen(port, () => console.log(`Servidor rodando na porta ${port}...`));
+
+
+
+
+

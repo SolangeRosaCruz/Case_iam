@@ -1,5 +1,5 @@
-login,email,cargo,grupos
-joao123,joao@example.com,analista java,
-maria,bonita@example.com,Desenvolvedor,
-nicolas,eloi@example.com,Desenvolvedor,gpo1;gpo2;gpo_deploy;gpo_dev
-matteo,coelho@example.com,Desenvolvedor,gpo_dev1
+login,email,password,cargo,grupos
+mario,pcruz@template.com,$2a$10$e5PIRX3uhIojKD8qdbixK.ESwGVrn9/05Z2BZBMeOglG.eHpcTJp6,analista,gpo_dev1
+carlos,olegario@exemplo.com,senha123,desenvolvedor js,
+guilherme,ferrer@exemplo.com,senha1senhanova23,desenvolvedor js,
+francica,araujo@exemplo.com,sen34690,desenvolvedor js,
